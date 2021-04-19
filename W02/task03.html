@@ -1,0 +1,96 @@
+<html>
+    <head>
+            <title>W02: task03</title>
+    </head>
+        <body>
+
+            <span>与えられた3つの点を頂点とする三角形の面積を計算します。</span>
+            <br>
+            <label> x0 = </label>
+            <input type="number" value="0" id="x0"/>
+            <label> y0 = </label>
+            <input type="number" value="0" id="y0"/>
+            <label> z0 = </label>
+            <input type="number" value="0" id="z0"/>
+            <br>
+            <label> x1 = </label>
+            <input type="number" value="0" id="x1"/>
+            <label> y1 = </label>
+            <input type="number" value="0" id="y1"/>
+            <label> z1 = </label>
+            <input type="number" value="0" id="z1"/>
+            <br>
+            <label> x2 = </label>
+            <input type="number" value="0" id="x2"/>
+            <label> y2 = </label>
+            <input type="number" value="0" id="y2"/>
+            <label> z2 = </label>
+            <input type="number" value="0" id="z2"/>
+
+            <input type="button" value="計算" onclick="clickBtn()"/>
+
+            <p>計算結果: <span id = "area2"></span></p>
+
+            <script src="Vec3.js"></script>
+            <script>
+                function AreaOfTriangle(v0, v1, v2)
+                {
+                    var xg, yg, zg;
+                    var area;
+                    var v01 = new Vec3(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
+                    var v02 = new Vec3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
+
+                    xg = v01.y*v02.z - v01.z*v02.y;
+                    yg = v01.z*v02.x - v01.x*v02.z;
+                    zg = v01.x*v02.y - v01.y*v02.x;
+                   
+                    area = Math.sqrt(Math.pow(xg, 2) + Math.pow(yg, 2) + Math.pow(zg, 2)) / 2;
+                    
+                    return area;
+                }
+
+                function clickBtn()
+                {
+                    var x0=document.getElementById("x0").value, y0=document.getElementById("y0").value, z0=document.getElementById("z0").value;
+                    var x1=document.getElementById("x1").value, y1=document.getElementById("y1").value, z1=document.getElementById("z1").value;
+                    var x2=document.getElementById("x2").value, y2=document.getElementById("y2").value, z2=document.getElementById("z2").value;
+                    var v0 = new Vec3(x0, y0, z0);
+                    var v1 = new Vec3(x1, y1, z1);
+                    var v2 = new Vec3(x2, y2, z2);
+
+                    
+                    var S = AreaOfTriangle(v0, v1, v2);
+                    document.getElementById("area2").innerHTML = S;
+
+                }
+
+
+                // var x0, y0, z0;
+                // var x1, y1, z1;
+                // var x2, y2, z2;
+                var v0 = new Vec3(x0, y0, z0);
+                var v1 = new Vec3(x1, y1, z1);
+                var v2 = new Vec3(x2, y2, z2);
+
+                // document.write("x0 = ");
+                // x0 = document.getElementById('x0');
+                // document.write("y0 = ");
+                // y0 = document.getElementById('y0');
+                // document.write("z0 = ");
+                // z0 = document.getElementById('z0');
+               
+
+                // var S = AreaOfTriangle(v0, v1, v2);
+
+                // document.write("計算結果:");
+            
+
+
+            </script>
+        </body>
+</html>
+
+
+
+                    
+

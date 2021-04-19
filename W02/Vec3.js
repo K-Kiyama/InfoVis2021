@@ -41,15 +41,15 @@ class Vec3 {
     {
       var result;
 
-      if (this.x != this.min() && this.x == this.max())
+      if (this.x != this.min() && this.x != this.max())
       {
         result = this.x;
       }
-      else if (this.y != this.min() && this.y == this.max())
+      else if (this.y != this.min() && this.y != this.max())
       {
         result = this.y;
       }
-      else if (this.z != this.min() && this.z == this.max())
+      else if (this.z != this.min() && this.z != this.max())
       {
         result = this.z;
       }
