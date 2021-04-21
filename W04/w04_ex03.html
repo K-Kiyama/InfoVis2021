@@ -8,7 +8,8 @@
 	<p>Hello D3! C</p>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script>
-	 var p = d3.select("body").select("p");
+	 //var p = d3.select("body").select("p"); //一番上のpにのみ適用
+	 var p = d3.select("body").selectAll("p"); //全てのpに適用
 	 p.style("font-weight","bold");
 	</script>
     </body>

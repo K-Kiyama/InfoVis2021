@@ -6,7 +6,8 @@
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script>
 	 var svg = d3.select("body").append("svg");
-	 d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W04/data.csv", draw );
+	//  d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W04/data.csv", draw );
+	d3.csv("https://K-Kiyama.github.io/InfoVis2021/W04/data.csv", draw );
 	 function draw(data){
 	     svg.selectAll("circle")
 		.data(data)
