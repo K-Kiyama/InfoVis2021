@@ -2,26 +2,39 @@
     <head>
         <title>W04: task 2</title>
     </head>
-    <body>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script>
-    
-    var svg = d3.select("body").append("svg").attr("height",1500).attr("width",500);
-    d3.csv("https://K-Kiyama.github.io/InfoVis2021/W04/w04_task2.csv", draw );
-    var padding = 10;
-    var height = 20;
-    function draw(data){
-        svg.selectAll("rect")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("x", padding)
-        .attr("y", function(d,i){ return padding + i * ( height + padding ); })
-        .attr("width", function(d){ return d.population/30000; })
-	    .attr("height", height);
-	    //.style("fill", function(d){ return d.color; });
-}
+        <body>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script>
+                
+                var span = d3.select("body").append(span);
+                span.text("日本の人口(2015年) (500万人以上の都道府県は赤く色分け)")
+                    .style("font-size", "30px")
+                    .style("font-weght", "bold");
+                
+                var svg = d3.select("body").append("svg").attr("height",2400).attr("width",500);
+                d3.csv("https://K-Kiyama.github.io/InfoVis2021/W04/w04_task2.csv", draw );
+                var padding = 30;
+                var height = 20;
 
-	</script>
-    </body>
+                function draw(data){
+                    svg.selectAll("rect")
+                     .data(data)
+                     .enter()
+                     .append("rect")
+                     .attr("x", padding)
+                     .attr("y", function(d,i){ return padding + i * ( height + padding ); })
+                     .attr("width", function(d){ return d.population/30000; })
+                     .attr("height", height)
+                     .style("fill", function(d){if(d.population > 5000000) return "red"})               
+
+                    svg.selectAll("text")
+                     .data(data)
+                     .enter()
+                     .append("text")
+                     .attr("x", padding)
+                     .attr("y", function(d,i){ return padding + i * ( height + padding ) - 3; })
+                     .text(function(d){ return d.prefecture + "(" + d.population + "人)";})
+                };
+        	</script>
+        </body>
 </html>
