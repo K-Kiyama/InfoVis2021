@@ -1,12 +1,13 @@
-d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/data_task1.csv")
+d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task1.csv")
     .then( data => {
-        data.forEach( d => { d.label = +d.label; d.value = +d.value; });
+        data.forEach( d => { d.value = +d.value; });
 
+       
         var config = {
             parent: '#drawing_region',
-            width: 256,
-            height: 128,
-            margin: {top:10, right:10, bottom:20, left:60}
+            width: 512,
+            height: 256,
+            margin: {top:40, right:20, bottom:40, left:120}
         };
 
         const Bar_plot = new BarPlot( config, data );
@@ -43,15 +44,16 @@ class BarPlot {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         self.xscale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.value)])
+            .domain([0, d3.max(self.data, d => d.value)])
             .range( [0, self.inner_width] );
 
-        self.yscale = d3.scaleLinear()
-            .domain(data.map(d => d.label))
-            .range( [0, self.inner_height] );
+        self.yscale = d3.scaleBand()
+            .domain(self.data.map(d => d.label))
+            .range( [0, self.inner_height] )
+            .paddingInner(0.1);
 
         self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(5)
+            .ticks(10)
             .tickSizeOuter(0);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -62,7 +64,7 @@ class BarPlot {
             .call( self.xaxis );
 
         self.yaxis_group = self.chart.append('g')
-            //.attr('transform', `translate(0, 0)`);
+            //.attr('transform', `translate(0, 0)`)
             .call( self.yaxis );
 
         self.xlabel = self.chart.append("g")
@@ -99,8 +101,8 @@ class BarPlot {
 
         const ymin = 0
         const ymax = self.data.length;
-        // self.xscale.domain( [xmin-20, Math.max(xmax, ymax)+10] );
-        // self.yscale.domain( [ymin-20, Math.max(xmax, ymax)+10] );
+        self.xscale.domain( [xmin-20, Math.max(xmax, ymax)+10] );
+        self.yscale.domain( [ymin-20, Math.max(xmax, ymax)+10] );
 
         self.render();
     }
@@ -114,13 +116,17 @@ class BarPlot {
             .append("rect")
             .attr("x", 0 )
             .attr("y", d => self.yscale( d.label ) )
-            .attr("width", d => xscale(d.value))
+            .attr("width", d => self.xscale(d.value))
             .attr("height", self.yscale.bandwidth());
 
         self.xaxis_group
+            .append('g')
+            .attr('transform', `translate(0, ${self.inner_height})`)
             .call( self.xaxis );
 
         self.yaxis_group
+            .append('g')
+            .attr('transform', `translate(0, ${self.inner_height})`)
             .call( self.yaxis );
     }
 }
