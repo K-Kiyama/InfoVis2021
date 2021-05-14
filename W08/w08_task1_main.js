@@ -70,7 +70,7 @@ class BarPlot {
         self.xlabel = self.chart.append("g")
                         .attr('transform', `translate(0, ${self.inner_height})`)
                         .append("text")
-                        .attr("x", 80)
+                        .attr("x", 160)
                         .attr("y", 35)
                         .text("X-label");
 
@@ -79,7 +79,7 @@ class BarPlot {
                         .attr('transform', 'rotate(-90)')
                         .append("text")
                         .attr("x", -110)
-                        .attr("y", -35)
+                        .attr("y", -55)
                         .text("Y-label");
 
         self.title = self.chart.append("g")
@@ -88,7 +88,7 @@ class BarPlot {
                         .attr("text-anchor", "middle")
                         .attr("font-size", "20pt")
                         .attr('font-weight', 'bold')
-                        .attr("x", 80)
+                        .attr("x", 190)
                         .attr("y", -5)
                         .text("Title");
     }
@@ -101,8 +101,8 @@ class BarPlot {
 
         const ymin = 0
         const ymax = self.data.length;
-        self.xscale.domain( [xmin-20, Math.max(xmax, ymax)+10] );
-        self.yscale.domain( [ymin-20, Math.max(xmax, ymax)+10] );
+        //self.xscale.domain( [xmin-20, Math.max(xmax, ymax)+10] );
+        //self.yscale.domain( [ymin-20, Math.max(xmax, ymax)+10] );
 
         self.render();
     }
@@ -120,13 +120,11 @@ class BarPlot {
             .attr("height", self.yscale.bandwidth());
 
         self.xaxis_group
-            .append('g')
             .attr('transform', `translate(0, ${self.inner_height})`)
             .call( self.xaxis );
 
         self.yaxis_group
-            .append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`)
+            //.attr('transform', `translate(0, ${self.inner_height})`)
             .call( self.yaxis );
     }
 }
