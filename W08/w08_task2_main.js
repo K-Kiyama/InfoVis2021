@@ -68,6 +68,11 @@ class LineChart {
             .x( d => self.xscale(d.x) )
             .y( d => self.yscale(d.y) );
 
+        self.area = d3.area()
+            .x( d => self.xscale(d.x) )
+            .y1( d => self.yscale(d.y) )
+            .y0( self.yscale(0) );
+
         self.xlabel = self.chart.append("text")
                         .attr('transform', `translate(0, ${self.inner_height})`)
                         .attr("x", self.inner_width/2)
@@ -87,7 +92,7 @@ class LineChart {
                         .attr("font-size", "20pt")
                         .attr('font-weight', 'bold')
                         .attr("x", self.inner_width/2)
-                        .attr("y", 0)
+                        .attr("y", -10)
                         .text("Sample data");
     }
 
@@ -111,8 +116,13 @@ class LineChart {
 
         self.chart.append("path")
             .attr('d', self.line(self.data))
-            .attr("stroke", 'purple' )
+            .attr("stroke", 'black' )
             .attr("fill", 'none');
+
+        self.chart.append("path")
+            .attr('d', self.area(self.data))
+            .attr("stroke", 'none' )
+            .attr("fill", 'gray');
         
         self.chart.selectAll("circle")
             .data(self.data)
