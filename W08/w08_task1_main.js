@@ -7,7 +7,7 @@ d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task1.csv")
             parent: '#drawing_region',
             width: 512,
             height: 256,
-            margin: {top:40, right:20, bottom:40, left:120}
+            margin: {top:40, right:20, bottom:40, left:60}
         };
 
         const Bar_plot = new BarPlot( config, data );
@@ -69,15 +69,15 @@ class BarPlot {
 
         self.xlabel = self.chart.append("text")
                         .attr('transform', `translate(0, ${self.inner_height})`)
-                        .attr("x", 160)
-                        .attr("y", 35)
+                        .attr("x", 140)
+                        .attr("y", 40)
                         .text("Number of strokes");
 
         self.ylabel = self.chart.append("text")
                         .attr('transform', `translate(0, 0)`)
                         .attr('transform', 'rotate(-90)')
                         .attr("x", -110)
-                        .attr("y", -55)
+                        .attr("y", -35)
                         .text("Kanji");
 
         self.title = self.chart.append("text")
@@ -86,7 +86,7 @@ class BarPlot {
                         .attr("font-size", "20pt")
                         .attr('font-weight', 'bold')
                         .attr("x", 190)
-                        .attr("y", -5)
+                        .attr("y", -10)
                         .text("Stroke count in my name");
     }
 
