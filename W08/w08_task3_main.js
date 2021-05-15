@@ -45,6 +45,7 @@ class PieChart {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
             
         self.pie = d3.pie()
+            .sort(null)
             .value( d => d.percent );
 
         self.arc = d3.arc()
@@ -57,7 +58,7 @@ class PieChart {
                         .attr("text-anchor", "middle")
                         .attr("x", self.config.width/2)
                         .attr("y", self.config.margin.top)
-                        .text("Test data");
+                        .text("Pickled scallion production in Japan");
     }
 
     update() {
