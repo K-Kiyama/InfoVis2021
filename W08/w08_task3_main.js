@@ -1,6 +1,6 @@
 d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
     .then( data => {
-        data.forEach( d => { d.value = d.value;});
+        data.forEach( d => { d.number = d.number; });
 
         var config = {
             parent: '#drawing_region',
@@ -76,7 +76,7 @@ class PieChart {
             .enter()
             .append('path')
             .attr('d', self.arc)
-            .attr('fill', d => self.color(d.data.label))
+            .attr('fill', d => self.color(d.data.number))
             .attr('stroke', 'white')
             .style('stroke-width', '2px');
 
@@ -90,7 +90,7 @@ class PieChart {
             .attr("dy", "5px")
             .attr("font", "10px")
             .attr("text-anchor", "middle")
-            .text(d => d.data.label + "(" + d.data.value + ")");
+            .text(d => d.data.name + "(" + d.data.number + ")");
        
     }
 }
