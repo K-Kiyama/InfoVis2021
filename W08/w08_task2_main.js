@@ -88,7 +88,7 @@ class LineChart {
                         .attr('font-weight', 'bold')
                         .attr("x", self.inner_width/2)
                         .attr("y", 0)
-                        .text("Test data");
+                        .text("Sample data");
     }
 
     update() {
