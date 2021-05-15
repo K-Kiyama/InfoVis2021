@@ -1,4 +1,4 @@
-d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
+d3.csv("https://k-kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
     .then( data => {
         data.forEach( d => { d.percent = +d.percent; });
 
@@ -7,7 +7,7 @@ d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
             width: 512,
             height: 512,
             margin: {top:40, right:20, bottom:40, left:50},
-            radius: 256
+            radius: 128
         };
 
         const pie_chart = new PieChart( config, data );
@@ -51,11 +51,12 @@ class PieChart {
             .innerRadius(self.config.radius/3)
             .outerRadius(self.config.radius);
 
-        self.title = self.chart.append("text")
+       self.title = self.svg.append("text")
                         .attr("font-size", "20pt")
                         .attr('font-weight', 'bold')
                         .attr("text-anchor", "middle")
-                        .attr("y", -150)
+                        .attr("x", self.config.width/2)
+                        .attr("y", self.config.margin.top)
                         .text("Test data");
     }
 
@@ -70,8 +71,8 @@ class PieChart {
     render() {
         let self = this;
         
-        self.chart.selectAll('pie')
-            .data( self.pie(self.data) )
+         self.chart.selectAll('pie')
+            .data(self.pie(self.data))
             .enter()
             .append('path')
             .attr('d', self.arc)
