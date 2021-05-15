@@ -1,4 +1,4 @@
-d3.csv("https://k-kiyama.github.io/InfoVis2021/W08/Data_task31.csv")
+d3.csv("https://k-kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
     .then( data => {
         data.forEach( d => { d.percent = +d.percent; });
 
@@ -53,12 +53,12 @@ class PieChart {
             .outerRadius(self.config.radius);
 
        self.title = self.svg.append("text")
-                        .attr("font-size", "20pt")
+                        .attr("font-size", "15pt")
                         .attr('font-weight', 'bold')
                         .attr("text-anchor", "middle")
                         .attr("x", self.config.width/2)
                         .attr("y", self.config.margin.top)
-                        .text("Pickled scallion production in Japan");
+                        .text("Pickled scallion production in Japan(2018)");
     }
 
     update() {
