@@ -7,7 +7,7 @@ d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
             width: 512,
             height: 512,
             margin: {top:40, right:20, bottom:40, left:50},
-            radius: 128
+            radius: 256
         };
 
         const pie_chart = new PieChart( config, data );
@@ -45,7 +45,7 @@ class PieChart {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
             
         self.pie = d3.pie()
-            .value( d => d.value );
+            .value( d => d.number );
 
         self.arc = d3.arc()
             .innerRadius(self.config.radius/3)
@@ -84,11 +84,11 @@ class PieChart {
             .data(self.pie(self.data))
             .enter()
             .append("text")
+            .attr("font-size", "10pt")
             .attr("fill", "black")
             .attr('font-weight', '800')
             .attr("transform", d => "translate(" + self.arc.centroid(d) + ")")
-            .attr("dy", "5px")
-            .attr("font", "10px")
+            .attr("dy", "10px")
             .attr("text-anchor", "middle")
             .text(d => d.data.name + "(" + d.data.number + ")");
        
