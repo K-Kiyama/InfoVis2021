@@ -40,10 +40,7 @@ class PieChart {
 
         self.chart = self.svg.append('g')
             .attr('transform', `translate(${self.config.width/2}, ${self.config.height/2})`);
-
-        self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
-        self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
-            
+    
         self.pie = d3.pie()
             .sort(null)
             .value( d => d.percent );
@@ -57,7 +54,7 @@ class PieChart {
                         .attr('font-weight', 'bold')
                         .attr("text-anchor", "middle")
                         .attr("x", self.config.width/2)
-                        .attr("y", self.config.margin.top)
+                        .attr("y", self.config.margin.top + 30)
                         .text("Pickled scallion production in Japan(2018)");
     }
 
@@ -85,10 +82,10 @@ class PieChart {
             .data(self.pie(self.data))
             .enter()
             .append("text")
+            .attr("transform", d => "translate(" + self.arc.centroid(d) + ")")
             .attr("font-size", "10pt")
             .attr("fill", "black")
             .attr('font-weight', '800')
-            .attr("transform", d => "translate(" + self.arc.centroid(d) + ")")
             .attr("dy", "10px")
             .attr("text-anchor", "middle")
             .text(d => d.data.Prefecture + " (" + d.data.percent + "%)");
