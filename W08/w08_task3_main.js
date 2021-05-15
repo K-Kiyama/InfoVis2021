@@ -1,6 +1,6 @@
 d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
     .then( data => {
-        data.forEach( d => { d.number = d.number; });
+        data.forEach( d => { d.percent = +d.percent; });
 
         var config = {
             parent: '#drawing_region',
@@ -45,7 +45,7 @@ class PieChart {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
             
         self.pie = d3.pie()
-            .value( d => d.number );
+            .value( d => d.percent );
 
         self.arc = d3.arc()
             .innerRadius(self.config.radius/3)
@@ -55,7 +55,6 @@ class PieChart {
                         .attr("font-size", "20pt")
                         .attr('font-weight', 'bold')
                         .attr("text-anchor", "middle")
-                        .attr("x", 0)
                         .attr("y", -150)
                         .text("Test data");
     }
@@ -76,7 +75,7 @@ class PieChart {
             .enter()
             .append('path')
             .attr('d', self.arc)
-            .attr('fill', d => self.color(d.data.number))
+            .attr('fill', d => self.color(d.data.element))
             .attr('stroke', 'white')
             .style('stroke-width', '2px');
 
@@ -90,7 +89,7 @@ class PieChart {
             .attr("transform", d => "translate(" + self.arc.centroid(d) + ")")
             .attr("dy", "10px")
             .attr("text-anchor", "middle")
-            .text(d => d.data.name + "(" + d.data.number + ")");
+            .text(d => d.data.element + " (" + d.data.percent + "%)");
        
     }
 }
