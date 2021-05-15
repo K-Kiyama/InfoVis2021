@@ -1,4 +1,4 @@
-d3.csv("https://k-kiyama.github.io/InfoVis2021/W08/Data_task3.csv")
+d3.csv("https://k-kiyama.github.io/InfoVis2021/W08/Data_task31.csv")
     .then( data => {
         data.forEach( d => { d.percent = +d.percent; });
 
@@ -76,7 +76,7 @@ class PieChart {
             .enter()
             .append('path')
             .attr('d', self.arc)
-            .attr('fill', d => self.color(d.data.element))
+            .attr('fill', d => self.color(d.data.Prefecture))
             .attr('stroke', 'white')
             .style('stroke-width', '2px');
 
@@ -90,7 +90,7 @@ class PieChart {
             .attr("transform", d => "translate(" + self.arc.centroid(d) + ")")
             .attr("dy", "10px")
             .attr("text-anchor", "middle")
-            .text(d => d.data.element + " (" + d.data.percent + "%)");
+            .text(d => d.data.Prefecture + " (" + d.data.percent + "%)");
        
     }
 }
