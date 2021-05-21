@@ -1,6 +1,6 @@
 d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task1.csv")
     .then( data => {
-        data.forEach( d => { d.value = +d.value; });
+        data.forEach( d => { d.id = +d.id; d.value = +d.value; });
 
        
         var config = {
@@ -139,7 +139,7 @@ class BarPlot {
        d3.select('#reset')
             .on('click', d => {
                 self.data.sort( function(a, b){
-                    return b.value - a.value
+                    return a.id - b.id
             });
             self.update();
             });
