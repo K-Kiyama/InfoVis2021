@@ -40,14 +40,6 @@ class PieChart {
 
         self.chart = self.svg.append('g')
             .attr('transform', `translate(${self.config.width/2}, ${self.config.height/2})`);
-    
-        self.pie = d3.pie()
-            .sort(null)
-            .value( d => d.percent );
-
-        self.arc = d3.arc()
-            .innerRadius(self.config.radius/3)
-            .outerRadius(self.config.radius);
 
        self.title = self.svg.append("text")
                         .attr("font-size", "15pt")
@@ -60,6 +52,14 @@ class PieChart {
 
     update() {
         let self = this;
+
+        self.pie = d3.pie()
+            .sort(null)
+            .value( d => d.percent );
+
+        self.arc = d3.arc()
+            .innerRadius(self.config.radius/3)
+            .outerRadius(self.config.radius);
 
         self.color = d3.scaleOrdinal(d3.schemeSet3); 
 
