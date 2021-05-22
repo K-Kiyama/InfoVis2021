@@ -7,7 +7,8 @@ d3.csv("https://K-Kiyama.github.io/InfoVis2021/W08/Data_task1.csv")
             parent: '#drawing_region',
             width: 512,
             height: 256,
-            margin: {top:40, right:20, bottom:40, left:60}
+            margin: {top:40, right:20, bottom:40, left:60},
+            buttonId: {reset:"#reset", ascend:"#ascend", descend:"#descend"}
         };
 
         const Bar_plot = new BarPlot( config, data );
@@ -24,7 +25,8 @@ class BarPlot {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            margin: config.margin || {top:10, right:10, bottom:10, left:10},
+            buttonId: config.buttonId || {reset:"#reset", ascend:"#ascend", descend:"#descend"}
         }
         this.data = data;
         this.init();
@@ -104,6 +106,9 @@ class BarPlot {
         //self.xscale.domain([0, d3.max(self.data, d => d.value)]);
 
         self.yscale.domain(self.data.map(d => d.label));
+
+        // self.color = d3.scaleOrdinal(d3.schemeSet3); 
+
         
         self.render();
     }
@@ -111,10 +116,35 @@ class BarPlot {
     render() {
         let self = this;
 
+        d3.select(self.config.buttonId.ascend)
+        .on('click', d => {
+           self.data.sort( function(a, b){
+               return a.value - b.value
+           });
+           self.update();
+        });
+
+        d3.select(self.config.buttonId.descend)
+        .on('click', d => {
+           self.data.sort( function(a, b){
+               return b.value - a.value
+           });
+           self.update();
+        });
+
+        d3.select(self.config.buttonId.reset)
+        .on('click', d => {
+            self.data.sort( function(a, b){
+                return a.id - b.id
+            });
+            self.update();
+        });
+
         self.chart.selectAll("rect")
             .data(self.data)
             .join("rect")
             .transition().duration(1000)
+            .attr('fill', d => d3.schemeCategory10[d.id])
             .attr("x", 0 )
             .attr("y", d => self.yscale( d.label ) )
             .attr("width", d => self.xscale(d.value))
@@ -128,21 +158,7 @@ class BarPlot {
             //.attr('transform', `translate(0, ${self.inner_height})`)
             .call( self.yaxis );
 
-        d3.select('#reverse')
-            .on('click', d => {
-               self.data.sort( function(a, b){
-                   return a.value - b.value
-               });
-               self.update();
-       });
-
-       d3.select('#reset')
-            .on('click', d => {
-                self.data.sort( function(a, b){
-                    return a.id - b.id
-            });
-            self.update();
-            });
+       
 
     }
 }
