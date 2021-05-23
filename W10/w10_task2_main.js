@@ -1,11 +1,11 @@
-d3.csv("https://K-Kiyama.github.io/InfoVis2021/W10/Data_task2_ave.csv")
+d3.csv("https://K-Kiyama.github.io/InfoVis2021/W10/Data_task2_ave.csv") //(http://www.data.jma.go.jp/obd/stats/etrn/view/monthly_s3.php?prec_no=63&block_no=47770)より引用
     .then( data => {
-        data.forEach( d => { d.x = +d.x; d.y = +d.y;});
+        data.forEach( d => { d.month = +d.month; d.temp = +d.temp;});
 
         var config = {
             parent: '#drawing_region',
-            width: 256,
-            height: 256,
+            width: 330,
+            height: 330,
             margin: {top:40, right:20, bottom:40, left:50}
         };
 
@@ -15,6 +15,47 @@ d3.csv("https://K-Kiyama.github.io/InfoVis2021/W10/Data_task2_ave.csv")
     .catch( error => {
         console.log( error );
     });
+
+function month(a){
+    switch(a){
+        case 1:
+            return "Jan.";
+            break;
+        case 2:
+            return "Feb.";
+            break;
+        case 3:
+            return "Mar.";
+            break;
+        case 4:
+            return "Apr.";
+            break;
+        case 5:
+            return "May.";
+            break;
+        case 6:
+            return "June.";
+            break;
+        case 7:
+            return "July";
+            break;
+        case 8:
+            return "Aug.";
+            break;
+        case 9:
+            return "Sept.";
+            break;
+        case 10:
+            return "Oct.";
+            break;
+        case 11:
+            return "Nov.";
+            break;
+        case 12:
+            return "Dec.";
+            break;
+    }
+}
 
 class LineChart {
 
@@ -49,7 +90,7 @@ class LineChart {
             .range([self.inner_height, 0])
 
         self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(5)
+            .ticks(12)
             .tickSizeOuter(0);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -77,23 +118,23 @@ class LineChart {
                         .attr('transform', `translate(0, ${self.inner_height})`)
                         .attr("x", self.inner_width/2)
                         .attr("y", 35)
-                        .text("x");
+                        .text("month");
 
         self.ylabel = self.chart.append("text")
                         .attr('transform', `translate(0, 0)`)
                         .attr('transform', 'rotate(-90)')
-                        .attr("x", -self.inner_height/2)
+                        .attr("x", -(self.inner_height/2 + 30))
                         .attr("y", -35)
-                        .text("y");
+                        .text("temperarure");
 
         self.title = self.chart.append("text")
                         .attr('transform', `translate(0, 0)`)
                         .attr("text-anchor", "middle")
-                        .attr("font-size", "20pt")
+                        .attr("font-size", "13pt")
                         .attr('font-weight', 'bold')
                         .attr("x", self.inner_width/2)
                         .attr("y", -10)
-                        .text("Sample data");
+                        .text("Average temperature in Kobe in 2020");
     }
 
     update() {
@@ -104,8 +145,8 @@ class LineChart {
 
         const ymin = d3.min( self.data, d => d.temp );
         const ymax = d3.max( self.data, d => d.temp );
-        self.xscale.domain( [xmin, xmax] );
-        self.yscale.domain( [ymin, ymax] );
+        self.xscale.domain( [xmin-0.5, xmax+0.5] );
+        self.yscale.domain( [ymin-0.3, ymax+3] );
 
 
         self.render();
@@ -122,19 +163,20 @@ class LineChart {
         self.chart.append("path")
             .attr('d', self.area(self.data))
             .attr("stroke", 'none' )
-            .attr("fill", 'gray');
+            .attr("fill", '#a2d0db');
         
         self.chart.selectAll("circle")
             .data(self.data)
             .enter()
             .append("circle")
             .attr("cx", d => self.xscale(d.month))
-            .attr("cy", d => self.xscale(d.temp))
+            .attr("cy", d => self.yscale(d.temp))
             .attr("r", 4)
+            .classed("cirStyle",true)
             .on('mouseover', (e,d) => {
                 d3.select('#tooltip')
                     .style('opacity', 1)
-                    .html(`<div class="tooltip-label">Position</div>(${d.month}, ${d.temp})`);
+                    .html(`<div class="tooltip-label">Temperature in ${month(d.month)}</div>${d.temp} degrees`);
             })
             .on('mousemove', (e) => {
                 const padding = 10;
