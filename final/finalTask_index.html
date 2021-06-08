@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Final task</title>
+	<style>
+	 body {
+	     font-family: system-ui;
+	 }
+	 .container {
+	     display: flex;
+	 }
+	 .bar.active {
+	     stroke: #000;
+	 }
+	 #tooltip {
+	     position: absolute;
+	     opacity: 0;
+	     background: #fff;
+	     border: 1px solid #ddd;
+	     font-size: 12px;
+	     font-weight: 600;
+	     padding: 2px 8px;
+	 }
+	 .tooltip-label {
+	     font-weight: 500;
+	     font-size: 11px;
+	     color: #888;
+	 }
+	</style>
+	<meta charset="UTF-8">
+    </head>
+    <body>
+	<h2>Kobe traffic accident Dataset</h2>
+	<div id="tooltip"></div>
+	<div class="container">
+	    <div><svg id="drawing_region_scatterplot"></svg></div>
+	    <div><svg id="drawing_region_barchart"></svg></div>
+	</div>
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="finalTask_ScatterPlot.js"></script>
+	<script src="finalTask_BarChart.js"></script>
+	<script src="finalTask_main.js"></script>
+	<script>
+		function myFunction1() {
+				var x = document.characterSet;
+				console.log(x)
+		}
+		
+		myFunction1();    
+	</script>
+    </body>
+</html>
