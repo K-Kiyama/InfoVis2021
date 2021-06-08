@@ -35,7 +35,7 @@ class BarChart {
             .range([self.inner_height, 0]);
 
         self.xaxis = d3.axisBottom(self.xscale)
-            .ticks(['setosa','versicolor','virginica'])
+            .ticks(['神戸市中央区','神戸市東灘区','神戸市灘区','神戸市兵庫区','神戸市北区','神戸市長田区','神戸市須磨区','神戸市垂水区','神戸市西区'])
             .tickSizeOuter(0);
 
         self.yaxis = d3.axisLeft(self.yscale)
