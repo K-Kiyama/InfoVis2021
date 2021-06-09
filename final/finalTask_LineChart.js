@@ -36,7 +36,7 @@ class LineChart {
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(10)
             .tickSize(5)
-            .tickFormat(d3.timeFormat("%Y-%m-%d"))
+            .tickFormat(d3.timeFormat("%Y/%m/%d"))
             .tickPadding(5);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -71,9 +71,10 @@ class LineChart {
 
     update() {
         let self = this;
-        var timeparser = d3.timeParse("%Y-%m-%d");
+        var timeparser = d3.timeParse("%Y/%m/%d");
 
         const data_map = d3.rollup( self.data, v => v.length, d => d.date );
+        console.log(self.data);
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
         self.aggregated_data.sort((a, b) => new Date(a.key) - new Date(b.key));
         self.aggregated_data = self.aggregated_data.map(function(d){
