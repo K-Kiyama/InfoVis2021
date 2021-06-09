@@ -27,7 +27,7 @@ class LineChart {
         self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
-        self.xscale = d3.scaleLinear()
+        self.xscale = d3.scaleTime()
             .range( [0, self.inner_width] );
 
         self.yscale = d3.scaleLinear()
@@ -36,7 +36,7 @@ class LineChart {
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(10)
             .tickSize(5)
-            .tickFormat(d3.timeFormat("%m-%d"))
+            .tickFormat(d3.timeFormat("$Y-%m-%d"))
             .tickPadding(5);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -71,7 +71,7 @@ class LineChart {
 
     update() {
         let self = this;
-        var timeparser = d3.timeParse("%m%d");
+        var timeparser = d3.timeParse("%Y-%m-%d");
 
         const data_map = d3.rollup( self.data, v => v.length, d => d.date );
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );

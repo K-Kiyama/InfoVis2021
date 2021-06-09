@@ -3,7 +3,7 @@ let scatter_plot;
 let bar_chart;
 let filter = []; //残っているデータ(今表示するデータ)を格納
 
- d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSet.csv")
+ d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSeta.csv")
 //d3.csv("finalTask_data.csv")
     .then( data => {
         input_data = data;
