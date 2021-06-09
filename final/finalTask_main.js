@@ -5,13 +5,13 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
 
 
 
- d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSet.csv")
+ d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSet2020.csv")
 //d3.csv("finalTask_data.csv")
     .then( data => {
         input_data = data;
         input_data.forEach( d => {
             d.time = +d.time;
-            d.date = +d.date;
+            
         });
 
         const color_scale = d3.scaleOrdinal( d3.schemeCategory10 );
@@ -44,7 +44,7 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
             width: 256,
             height: 256,
             margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'Whether',
+            xlabel: 'Weather',
             ylabel: '',
             cscale: color_scale
         }, input_data );
@@ -59,9 +59,7 @@ function Filter() {
         line_chart.data = input_data;
     }
     else {
-       line_chart.data = input_data.filter( d => filter.includes( d.date ) );
+       line_chart.data = input_data.filter( d => filter.includes( d.time ) || filter.includes( d.weather ));
     }
     line_chart.update();
 }
-
-

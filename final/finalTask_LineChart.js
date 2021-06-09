@@ -74,7 +74,6 @@ class LineChart {
         var timeparser = d3.timeParse("%Y/%m/%d");
 
         const data_map = d3.rollup( self.data, v => v.length, d => d.date );
-        console.log(self.data);
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
         self.aggregated_data.sort((a, b) => new Date(a.key) - new Date(b.key));
         self.aggregated_data = self.aggregated_data.map(function(d){
@@ -90,11 +89,11 @@ class LineChart {
 
         const xmin = d3.min( self.aggregated_data.map( function(d){return d.key;}));
         const xmax = d3.max( self.aggregated_data.map( function(d){return d.key;} ));
-        self.xscale.domain( [ d3.min(self.aggregated_data.map( function(d){return d.key;} ) ), d3.max(self.aggregated_data.map( function(d){return d.key;}))]);
+        self.xscale.domain( [ xmin, xmax]);
     
         const ymin = d3.min( self.aggregated_data, self.yvalue );
         const ymax = d3.max( self.aggregated_data, self.yvalue );
-        self.yscale.domain( [ymax, ymin] );
+        self.yscale.domain( [ymax, 0] );
 
         self.render();
     }

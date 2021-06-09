@@ -68,7 +68,7 @@ class BarChart2 {
     update() {
         let self = this;
 
-        const data_map = d3.rollup( self.data, v => v.length, d => d.whether );
+        const data_map = d3.rollup( self.data, v => v.length, d => d.weather );
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
         self.aggregated_data.sort(function(a,b){return(a.key - b.key);});
 
