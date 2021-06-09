@@ -71,14 +71,14 @@ class LineChart {
 
     update() {
         let self = this;
-        //var timeparser = d3.timeParse("%m-%d");
+        var timeparser = d3.timeParse("%m%d");
 
         const data_map = d3.rollup( self.data, v => v.length, d => d.date );
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
-        //self.aggregated_data.sort((a, b) => new Date(a.key) - new Date(b.key));
-        // self.aggregated_data = self.aggregated_data.map(function(d){
-        //     return {key:timeparser(d.key), count:d.count};
-        // });
+        self.aggregated_data.sort((a, b) => new Date(a.key) - new Date(b.key));
+        self.aggregated_data = self.aggregated_data.map(function(d){
+            return {key:timeparser(d.key), count:d.count};
+        });
 
         console.log(self.aggregated_data);
        
