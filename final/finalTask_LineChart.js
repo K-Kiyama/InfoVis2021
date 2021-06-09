@@ -83,7 +83,10 @@ class LineChart {
        
         self.cvalue = d => d.key;
         self.xvalue = d => d.key;
-        self.yvalue = d => d.length;
+        self.yvalue = d => d.count;
+
+        const items = self.aggregated_data.map( self.xvalue );
+        self.xscale.domain(items);
 
         const xmin = d3.min( self.data, self.xvalue );
         const xmax = d3.max( self.data, self.xvalue );
