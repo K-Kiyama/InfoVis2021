@@ -1,4 +1,4 @@
-class ScatterPlot {
+class LineChart {
 
     constructor( config, data ) {
         this.config = {
@@ -70,9 +70,20 @@ class ScatterPlot {
     update() {
         let self = this;
 
-        self.cvalue = d => d.species;
-        self.xvalue = d => d.sepal_length;
-        self.yvalue = d => d.sepal_width;
+        const data_map = d3.rollup( self.data, v => v.length, d => d.date );
+        self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
+        self.aggregated_data.sort(function(a,b){return(a.key - b.key);});
+
+        console.log(self.aggregated_data);
+        // const data_count = d3.nest()
+        //         .key(function(d) { return d.date;})
+        //         .rollup(function(v) {return v.length;})
+        //         .entries(self.data);
+
+       
+        self.cvalue = d => d.key;
+        self.xvalue = d => d.key;
+        self.yvalue = d => d.length;
 
         const xmin = d3.min( self.data, self.xvalue );
         const xmax = d3.max( self.data, self.xvalue );
@@ -88,8 +99,27 @@ class ScatterPlot {
     render() {
         let self = this;
 
+        self.line = d3.line()
+            .x( d => self.xscale(self.xvalue(d)) )
+            .y( d => self.yscale(self.yvalue(d)) );
+
+        self.area = d3.area()
+            .x( d => self.xscale(self.xvalue(d)) )
+            .y1( d => self.yscale(self.yvalue(d)) )
+            .y0( self.yscale(0) );
+
+        self.chart.append("path")
+            .attr('d', self.line(self.data))
+            .attr("stroke", 'black' )
+            .attr("fill", 'none');
+
+        self.chart.append("path")
+            .attr('d', self.area(self.data))
+            .attr("stroke", 'none' )
+            .attr("fill", 'gray');
+
         let circles = self.chart.selectAll("circle")
-            .data(self.data)
+            .data(self.aggregated_data)
             .join('circle');
 
         const circle_color = 'steelblue';
@@ -104,7 +134,7 @@ class ScatterPlot {
             .on('mouseover', (e,d) => {
                 d3.select('#tooltip')
                     .style('opacity', 1)
-                    .html(`<div class="tooltip-label">${d.species}</div>(${d.sepal_length}, ${d.sepal_length})`);
+                    .html(`<div class="tooltip-label">${self.xvalue(d)}</div>(${self.yvalue(d)})`);
             })
             .on('mousemove', (e) => {
                 const padding = 10;
