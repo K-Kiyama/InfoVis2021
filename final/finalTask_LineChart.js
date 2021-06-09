@@ -36,7 +36,7 @@ class LineChart {
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(10)
             .tickSize(5)
-            .tickFormat(d3.timeFormat("%Y/%m/%d"))
+            .tickFormat(d3.timeFormat("%m/%d"))
             .tickPadding(5);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -80,7 +80,7 @@ class LineChart {
             return {key:timeparser(d.key), count:d.count};
         });
 
-        console.log(self.aggregated_data);
+       // console.log(self.aggregated_data);
        
         self.cvalue = d => d.key;
         self.xvalue = d => d.key;
@@ -101,36 +101,21 @@ class LineChart {
     render() {
         let self = this;
 
-        self.line = d3.line()
-            .x( d => self.xscale(self.xvalue(d)) )
-            .y( d => self.yscale(self.yvalue(d)) );
+        const circle_color = 'steelblue';
+        const circle_radius = 3;
 
-        self.area = d3.area()
-            .x( d => self.xscale(self.xvalue(d)) )
-            .y1( d => self.yscale(self.yvalue(d)) )
-            .y0( self.yscale(0) );
 
-        // self.chart.append("path")
-        //     .attr('d', self.line(self.aggregated_data))
-        //     .attr("stroke", 'none' )
-        //     .attr("fill", "black" );
-        // self.chart.append("path")
-        //     .attr('d', self.area(self.aggregated_data))
-        //     .attr("stroke", 'none' )
-        //     .attr("fill", "blue" );
 
         let circles = self.chart.selectAll("circle")
             .data(self.aggregated_data)
             .join('circle');
 
-        const circle_color = 'steelblue';
-        const circle_radius = 3;
         circles
             .attr("r", circle_radius )
             .attr("cx", d => self.xscale( self.xvalue(d) ) )
             .attr("cy", d => self.yscale( self.yvalue(d) ) )
             //.attr("fill","none" );
-            .attr("fill", d => self.config.cscale( self.cvalue(d) ) );
+            .attr("fill", circle_color );
 
         circles
             .on('mouseover', (e,d) => {
@@ -148,6 +133,17 @@ class LineChart {
                 d3.select('#tooltip')
                     .style('opacity', 0);
             });
+
+        // self.area = d3.area()
+        // 　  .x( d => self.xscale(self.xvalue(d)) )
+        //     .y1( d => self.yscale(self.yvalue(d)) )
+        //     .y0( self.yscale(0) );
+
+        // self.chart.append("path")
+        //     .attr('d', self.area(self.aggregated_data))
+        //     .attr("stroke", 'none' )
+        //     .attr("fill", "#a2d0db");
+
 
         self.xaxis_group
             .call( self.xaxis );

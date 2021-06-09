@@ -80,6 +80,7 @@ class BarChart {
 
         const ymin = 0;
         const ymax = d3.max( self.aggregated_data, self.yvalue );
+        console.log(ymax);
         self.yscale.domain([ymin, ymax]);
 
         self.render();
@@ -106,7 +107,7 @@ class BarChart {
                     filter.push( d.key );
                 }
                 Filter();
-                d3.select(this).classed('active', !is_active); //バーの縁取り(クリックの可視化)
+                d3.select(this).classed('active', !is_active);
             });
 
         self.xaxis_group

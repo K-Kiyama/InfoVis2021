@@ -1,7 +1,7 @@
 let input_data;
 let scatter_plot;
 let bar_chart;
-let filter = []; //残っているデータ(今表示するデータ)を格納
+let filter = [];
 
 d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W12/iris.csv")
     .then( data => {

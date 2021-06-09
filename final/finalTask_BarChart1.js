@@ -99,15 +99,15 @@ class BarChart1 {
             .attr("height", d => self.inner_height - self.yscale( self.yvalue(d) ))
             .attr("fill", d => self.config.cscale( self.cvalue(d) ))
             .on('click', function(ev,d) {
-                const is_active = filter.includes(d.key);
-                if ( is_active ) {
-                    filter = filter.filter( f => f !== d.key );
+                const is_active1 = filter1.includes(d.key);
+                if ( is_active1 ) {
+                    filter1 = filter1.filter( f => f !== d.key );
                 }
                 else {
-                    filter.push( d.key );
+                    filter1.push( d.key );
                 }
                 Filter();
-                d3.select(this).classed('active', !is_active); //バーの縁取り(クリックの可視化)
+                d3.select(this).classed('active', !is_active1); //バーの縁取り(クリックの可視化)
             });
 
         self.xaxis_group

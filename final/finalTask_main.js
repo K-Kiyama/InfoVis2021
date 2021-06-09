@@ -1,7 +1,8 @@
 let input_data;
 let scatter_plot;
 let bar_chart;
-let filter = []; //残っているデータ(今表示するデータ)を格納
+let filter1 = []; //残っているデータ(今表示するデータ)を格納
+let filter2 = [];
 
 
 
@@ -15,11 +16,11 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
         });
 
         const color_scale = d3.scaleOrdinal( d3.schemeCategory10 );
-        color_scale.domain(['神戸市中央区','神戸市東灘区','神戸市灘区','神戸市兵庫区','神戸市北区','神戸市長田区','神戸市須磨区','神戸市垂水区','神戸市西区']);
+        color_scale.domain([]);
 
         line_chart = new LineChart( {
             parent: '#drawing_region_linechart',
-            width: 660,
+            width: 1024,
             height: 256,
             margin: {top:10, right:10, bottom:50, left:50},
             xlabel: '日付',
@@ -33,7 +34,7 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
             width: 400,
             height: 256,
             margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'time[時]',
+            xlabel: '時刻',
             ylabel: '',
             cscale: color_scale
         }, input_data );
@@ -44,7 +45,7 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
             width: 256,
             height: 256,
             margin: {top:10, right:10, bottom:50, left:50},
-            xlabel: 'Weather',
+            xlabel: '天候',
             ylabel: '',
             cscale: color_scale
         }, input_data );
@@ -55,11 +56,60 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
     });
 
 function Filter() {
-    if ( filter.length == 0 ) {
+
+    // console.log(filter1);
+    // console.log(filter2);
+
+    if ( filter1.length == 0 && filter2.length == 0 ) {
         line_chart.data = input_data;
     }
+    else  if ( filter2.length == 0 ){
+       line_chart.data = input_data.filter(d => filter1.includes( d.time ) );
+    }
+    else if ( filter1.length == 0 ){
+        line_chart.data = input_data.filter(d => filter2.includes( d.weather ) );
+    }
     else {
-       line_chart.data = input_data.filter( d => filter.includes( d.time ) || filter.includes( d.weather ));
+        line_chart.data = input_data.filter(d => (filter1.includes( d.time ) && filter2.includes( d.weather )));
     }
     line_chart.update();
 }
+
+// function clickBtn(){
+
+//     var num = document.getElementById("month").value;
+//     console.log(num);
+
+//     //var instant_data = input_data;
+   
+//     if(num =="0"){
+//         line_chart.data = input_data;
+//     }
+//     else {
+//         line_chart.data  = input_data.filter(function(d){
+
+//             if( d.date.substr(6,1) != "/" ){
+//                 if (d.date.substr(5,2) == num) {
+//                     console.log(d.date.substr(5,2) );
+//                     return 1;
+//                 } else {
+//                  console.log(d.date.substr(5,2) );
+//                     return 0; 
+//                 }
+//             } else {
+//                 if (d.date.substr(5,1) == num) {
+//                     console.log(d.date.substr(5,1) );
+//                     return 1;
+//                 } else {
+//                  console.log(d.date.substr(5,1) );
+//                     return 0; 
+//                 }
+//             }
+//         } );
+//     }
+//     console.log(instant_data);
+//         //line_chart.data = instant_data;
+//         line_chart.update();
+//     }
+
+
