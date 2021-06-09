@@ -72,7 +72,7 @@ class LineChart {
 
         const data_map = d3.rollup( self.data, v => v.length, d => d.date );
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
-        self.aggregated_data.sort(function(a,b){return(a.key - b.key);});
+        self.aggregated_data.sort((a, b) => new Date(a.key) - new Date(b.key));
 
         console.log(self.aggregated_data);
         // const data_count = d3.nest()
