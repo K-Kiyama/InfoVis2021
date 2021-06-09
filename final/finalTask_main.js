@@ -21,7 +21,7 @@ let filter = []; //残っているデータ(今表示するデータ)を格納
             height: 256,
             margin: {top:10, right:10, bottom:50, left:50},
             xlabel: '日付',
-            ylabel: '事故が起きた回数 ',
+            ylabel: 'count of accidents',
             cscale: color_scale
         }, input_data );
         line_chart.update();

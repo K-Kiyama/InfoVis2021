@@ -31,11 +31,12 @@ class LineChart {
             .range( [0, self.inner_width] );
 
         self.yscale = d3.scaleLinear()
-            .range( [self.inner_height, 0] );
+            .range( [0, self.inner_height] );
 
         self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(3)
+            .ticks(10)
             .tickSize(5)
+            .tickFormat(d3.timeFormat("%Y-%m-%d"))
             .tickPadding(5);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -65,35 +66,34 @@ class LineChart {
             .attr('text-anchor', 'middle')
             .attr('dy', '1em')
             .text( self.config.ylabel );
+
+            var formatTime = d3.timeFormat("%Y-%-m-%d");
     }
 
     update() {
         let self = this;
+        var timeparser = d3.timeParse("%Y-%m-%e");
 
         const data_map = d3.rollup( self.data, v => v.length, d => d.date );
         self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
         self.aggregated_data.sort((a, b) => new Date(a.key) - new Date(b.key));
+        self.aggregated_data = self.aggregated_data.map(function(d){
+            return {key:timeparser(d.key), count:d.count};
+        });
 
         console.log(self.aggregated_data);
-        // const data_count = d3.nest()
-        //         .key(function(d) { return d.date;})
-        //         .rollup(function(v) {return v.length;})
-        //         .entries(self.data);
-
        
         self.cvalue = d => d.key;
         self.xvalue = d => d.key;
         self.yvalue = d => d.count;
 
-        const items = self.aggregated_data.map( self.xvalue );
-        self.xscale.domain(items);
 
-        const xmin = d3.min( self.data, self.xvalue );
-        const xmax = d3.max( self.data, self.xvalue );
-        self.xscale.domain( [xmin, xmax] );
-
-        const ymin = d3.min( self.data, self.yvalue );
-        const ymax = d3.max( self.data, self.yvalue );
+        const xmin = d3.min( self.aggregated_data.map( function(d){return d.key;}));
+        const xmax = d3.max( self.aggregated_data.map( function(d){return d.key;} ));
+        self.xscale.domain( [ d3.min(self.aggregated_data.map( function(d){return d.key;} ) ), d3.max(self.aggregated_data.map( function(d){return d.key;}))]);
+    
+        const ymin = d3.min( self.aggregated_data, self.yvalue );
+        const ymax = d3.max( self.aggregated_data, self.yvalue );
         self.yscale.domain( [ymax, ymin] );
 
         self.render();
@@ -111,15 +111,14 @@ class LineChart {
             .y1( d => self.yscale(self.yvalue(d)) )
             .y0( self.yscale(0) );
 
-        self.chart.append("path")
-            .attr('d', self.line(self.data))
-            .attr("stroke", 'black' )
-            .attr("fill", 'none');
-
-        self.chart.append("path")
-            .attr('d', self.area(self.data))
-            .attr("stroke", 'none' )
-            .attr("fill", 'gray');
+        // self.chart.append("path")
+        //     .attr('d', self.line(self.aggregated_data))
+        //     .attr("stroke", 'none' )
+        //     .attr("fill", "black" );
+        // self.chart.append("path")
+        //     .attr('d', self.area(self.aggregated_data))
+        //     .attr("stroke", 'none' )
+        //     .attr("fill", "blue" );
 
         let circles = self.chart.selectAll("circle")
             .data(self.aggregated_data)
@@ -131,6 +130,7 @@ class LineChart {
             .attr("r", circle_radius )
             .attr("cx", d => self.xscale( self.xvalue(d) ) )
             .attr("cy", d => self.yscale( self.yvalue(d) ) )
+            //.attr("fill","none" );
             .attr("fill", d => self.config.cscale( self.cvalue(d) ) );
 
         circles
