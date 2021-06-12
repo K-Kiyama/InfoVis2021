@@ -5,7 +5,7 @@ let filter2 = [];
 
 
 
- d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSet2020.csv")
+ d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSet2019-2020.csv")
     .then( data => {
         input_data = data;
         input_data.forEach( d => {
