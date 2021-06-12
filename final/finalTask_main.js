@@ -52,8 +52,27 @@ let filter2 = [];
         console.log( error );
     });
 
-function Filter() {
+function Filter(F_data=[],id = 0) {
+    if(id == 0){F_data = input_data;}
+    //var filter_data[] = F_data;
 
+
+    if ( filter1.length == 0 && filter2.length == 0 ) {
+        line_chart.data = F_data;
+    }
+    else  if ( filter2.length == 0 ){
+       line_chart.data = F_data.filter(d => filter1.includes( d.time ) );
+    }
+    else if ( filter1.length == 0 ){
+        line_chart.data = F_data.filter(d => filter2.includes( d.weather ) );
+    }
+    else {
+        line_chart.data = F_data.filter(d => (filter1.includes( d.time ) && filter2.includes( d.weather )));
+    }
+    line_chart.update();
+}
+
+function Select(){
     // console.log(filter1);
     // console.log(filter2);
     var filter_data = input_data;
@@ -69,7 +88,7 @@ function Filter() {
         filter_data = input_data.filter(function(d){
             return d.accident == "死亡";
         });
-    } else {
+    } else if(accidentSelect.value == 0){
          filter_data = input_data;
         }
 
@@ -84,34 +103,19 @@ function Filter() {
         } else {
              filter_data = filter_data;
             }
-
     bar_chart1.data = filter_data;
     bar_chart2.data = filter_data;
-   
-    //console.log(filter_data);
-
-    if ( filter1.length == 0 && filter2.length == 0 ) {
-        line_chart.data = filter_data;
-    }
-    else  if ( filter2.length == 0 ){
-       line_chart.data = filter_data.filter(d => filter1.includes( d.time ) );
-    }
-    else if ( filter1.length == 0 ){
-        line_chart.data = filter_data.filter(d => filter2.includes( d.weather ) );
-    }
-    else {
-        line_chart.data = filter_data.filter(d => (filter1.includes( d.time ) && filter2.includes( d.weather )));
-    }
-    line_chart.update();
     bar_chart1.update();
     bar_chart2.update();
+
+    Filter(filter_data,1);
 }
 
 let accidentSelect = document.getElementById('accident');
-accidentSelect.addEventListener('change', Filter);
+accidentSelect.addEventListener('change', Select);
 
 let yearSelect = document.getElementById('year');
-yearSelect.addEventListener('change', Filter); 
+yearSelect.addEventListener('change', Select); 
 
 // function clickBtn(){
 
