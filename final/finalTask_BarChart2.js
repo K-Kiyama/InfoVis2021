@@ -76,7 +76,7 @@ class BarChart2 {
         self.xvalue = d => d.key;
         self.yvalue = d => d.count;
 
-        console.log(self.aggregated_data);
+        //console.log(self.aggregated_data);
 
         const items = self.aggregated_data.map( self.xvalue );
         self.xscale.domain(items);
@@ -102,6 +102,7 @@ class BarChart2 {
             .attr("fill", d => self.config.cscale( self.cvalue(d) ))
             .on('click', function(ev,d) {
                 const is_active2 = filter2.includes(d.key);
+                console.log(filter2);
                 if ( is_active2 ) {
                     filter2 = filter2.filter( f => f !== d.key );
                 }

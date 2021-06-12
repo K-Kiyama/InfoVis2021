@@ -56,21 +56,62 @@ function Filter() {
 
     // console.log(filter1);
     // console.log(filter2);
+    var filter_data = input_data;
+
+    // console.log(accidentSelect.value);
+    // console.log(yearSelect.value);
+
+    if(accidentSelect.value == 1){
+        filter_data = input_data.filter(function(d){
+            return d.accident == "負傷";
+        });
+    } else if(accidentSelect.value == 2){
+        filter_data = input_data.filter(function(d){
+            return d.accident == "死亡";
+        });
+    } else {
+         filter_data = input_data;
+        }
+
+    if(yearSelect.value == 1){
+            filter_data = filter_data.filter(function(d){
+                return d.date.substr(0, 4) == "2019";
+            });
+        } else if(yearSelect.value == 2){
+            filter_data = filter_data.filter(function(d){
+                return d.date.substr(0, 4) == "2020";
+            });
+        } else {
+             filter_data = filter_data;
+            }
+
+    bar_chart1.data = filter_data;
+    bar_chart2.data = filter_data;
+   
+    //console.log(filter_data);
 
     if ( filter1.length == 0 && filter2.length == 0 ) {
-        line_chart.data = input_data;
+        line_chart.data = filter_data;
     }
     else  if ( filter2.length == 0 ){
-       line_chart.data = input_data.filter(d => filter1.includes( d.time ) );
+       line_chart.data = filter_data.filter(d => filter1.includes( d.time ) );
     }
     else if ( filter1.length == 0 ){
-        line_chart.data = input_data.filter(d => filter2.includes( d.weather ) );
+        line_chart.data = filter_data.filter(d => filter2.includes( d.weather ) );
     }
     else {
-        line_chart.data = input_data.filter(d => (filter1.includes( d.time ) && filter2.includes( d.weather )));
+        line_chart.data = filter_data.filter(d => (filter1.includes( d.time ) && filter2.includes( d.weather )));
     }
     line_chart.update();
+    bar_chart1.update();
+    bar_chart2.update();
 }
+
+let accidentSelect = document.getElementById('accident');
+accidentSelect.addEventListener('change', Filter);
+
+let yearSelect = document.getElementById('year');
+yearSelect.addEventListener('change', Filter); 
 
 // function clickBtn(){
 

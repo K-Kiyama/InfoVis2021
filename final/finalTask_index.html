@@ -29,25 +29,21 @@
 	<meta charset="UTF-8">
     </head>
     <body>
-	<h2>Kobe traffic accident Dataset in 2020.</h2>
-	<!-- <div>
-		<select id="month">
-			<option value="0">月を選ぶ</option>
-			<option value="1">1月</option>
-			<option value="2">2月</option>
-			<option value="3">3月</option>
-			<option value="4">4月</option>
-			<option value="5">5月</option>
-			<option value="6">6月</option>
-			<option value="7">7月</option>
-			<option value="8">8月</option>
-			<option value="9">9月</option>
-			<option value="10">10月</option>
-			<option value="11">11月</option>
-			<option value="12">12月</option>
+	<h2>Kobe traffic accident Dataset in 2019-2020.</h2>
+	<div>
+		<select id="year">
+			<option value="0">年を選ぶ</option>
+			<option value="1">2019年</option>
+			<option value="2">2020年</option>
 		</select>
-	<input type="button" value="決定" onclick="clickBtn()"/>
-    </div> -->
+    </div>
+	<div>
+		<select id="accident">
+			<option value="0">全体(事故の種類)</option>
+			<option value="1">負傷</option>
+			<option value="2">死亡</option>
+		</select>
+	</div>
 	<div id="tooltip"></div>
 	<div><svg id="drawing_region_linechart"></svg></div>
 	<div class="container">
@@ -55,7 +51,7 @@
 		<div><svg id="drawing_region_barchart2"></svg></div>
 	</div>
 	<p>このページは、以下の著作物を改変して利用しています。</p>
-		<p>[<a href="https://data.city.kobe.lg.jp/data/dataset/kotsujiko">神戸市交通事故発生状況-Open Data Kobe</a>],[兵庫県]</p>
+		<p>[<a href="http://open-data.pref.hyogo.lg.jp/index.php?action=pages_view_main&block_id=85&active_action=multidatabase_view_main_detail&content_id=12522&multidatabase_id=209&block_id=85#_85">交通事故統計情報-ひょうごオープンデータカタログ</a>],[兵庫県]</p>
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 	<script src="finalTask_LineChart.js"></script>
 	<script src="finalTask_BarChart1.js"></script>

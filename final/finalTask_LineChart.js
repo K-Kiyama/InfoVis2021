@@ -36,7 +36,7 @@ class LineChart {
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(10)
             .tickSize(5)
-            .tickFormat(d3.timeFormat("%m/%d"))
+            .tickFormat(d3.timeFormat("%Y/%m/%d"))
             .tickPadding(5);
 
         self.yaxis = d3.axisLeft( self.yscale )
@@ -66,7 +66,6 @@ class LineChart {
             .attr('text-anchor', 'middle')
             .attr('dy', '1em')
             .text( self.config.ylabel );
-
 
     }
 
