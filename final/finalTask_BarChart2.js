@@ -76,7 +76,7 @@ class BarChart2 {
         self.xvalue = d => d.key;
         self.yvalue = d => d.count;
 
-        console.log(self.data.weather);
+        console.log(self.aggregated_data);
 
         const items = self.aggregated_data.map( self.xvalue );
         self.xscale.domain(items);
