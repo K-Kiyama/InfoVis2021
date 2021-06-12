@@ -1,13 +1,11 @@
 let input_data;
 let scatter_plot;
-let bar_chart;
 let filter1 = []; //残っているデータ(今表示するデータ)を格納
 let filter2 = [];
 
 
 
  d3.csv("https://k-kiyama.github.io/InfoVis2021/final/finalTask_dataSet2020.csv")
-//d3.csv("finalTask_data.csv")
     .then( data => {
         input_data = data;
         input_data.forEach( d => {
@@ -16,7 +14,6 @@ let filter2 = [];
         });
 
         const color_scale = d3.scaleOrdinal( d3.schemeCategory10 );
-        color_scale.domain([]);
 
         line_chart = new LineChart( {
             parent: '#drawing_region_linechart',

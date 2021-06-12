@@ -67,6 +67,7 @@ class LineChart {
             .attr('dy', '1em')
             .text( self.config.ylabel );
 
+
     }
 
     update() {
@@ -80,20 +81,26 @@ class LineChart {
             return {key:timeparser(d.key), count:d.count};
         });
 
-       // console.log(self.aggregated_data);
+        // self.line = d3.line()
+        //     .x( d => self.xscale(self.xvalue(d)) )
+        //     .y( d => self.yscale(self.yvalue(d)) );
+
+        //console.log(self.aggregated_data);
        
-        self.cvalue = d => d.key;
+        //self.cvalue = d => d.key;
         self.xvalue = d => d.key;
         self.yvalue = d => d.count;
 
 
         const xmin = d3.min( self.aggregated_data.map( function(d){return d.key;}));
         const xmax = d3.max( self.aggregated_data.map( function(d){return d.key;} ));
-        self.xscale.domain( [ xmin, xmax]);
+        self.xscale.domain( [ xmin, xmax ]);
     
         const ymin = d3.min( self.aggregated_data, self.yvalue );
         const ymax = d3.max( self.aggregated_data, self.yvalue );
         self.yscale.domain( [ymax, 0] );
+
+
 
         self.render();
     }
@@ -104,6 +111,11 @@ class LineChart {
         const circle_color = 'steelblue';
         const circle_radius = 3;
 
+
+        // self.chart.append("path")
+        //     .attr('d', self.line(self.aggregated_data))
+        //     .attr("stroke", 'black' )
+        //     .attr("fill", 'none');
 
 
         let circles = self.chart.selectAll("circle")
@@ -133,16 +145,6 @@ class LineChart {
                 d3.select('#tooltip')
                     .style('opacity', 0);
             });
-
-        // self.area = d3.area()
-        // 　  .x( d => self.xscale(self.xvalue(d)) )
-        //     .y1( d => self.yscale(self.yvalue(d)) )
-        //     .y0( self.yscale(0) );
-
-        // self.chart.append("path")
-        //     .attr('d', self.area(self.aggregated_data))
-        //     .attr("stroke", 'none' )
-        //     .attr("fill", "#a2d0db");
 
 
         self.xaxis_group

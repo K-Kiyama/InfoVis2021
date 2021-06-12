@@ -1,0 +1,141 @@
+class PieChart {
+    constructor (config, data) {
+        this.config = {
+            parent: config.parent,
+            width: config.width || 256,
+            height: config.height || 256,
+            margin: config.margin || {top:10, right:10, bottom:10, left:10},
+            xlabel: config.xlabel || '',
+            ylabel: config.ylabel || '',
+            cscale: config.cscale,
+            radius: 128
+        };
+        this.data = data;
+        this.init();
+    }
+
+    init() {
+        let self = this;
+
+        self.svg = d3.select(self.config.parent)
+            .attr('width', self.config.width)
+            .attr('height', self.config.height);
+
+        self.chart = self.svg.append('g')
+            .attr('transform', `translate(${self.config.margin.left}, ${self.config.margin.top})`);
+
+        self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
+        self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
+
+        self.xscale = d3.scaleBand()
+            .range([0, self.inner_width])
+            .paddingInner(0.2)
+            .paddingOuter(0.1);
+
+        self.yscale = d3.scaleLinear()
+            .range([self.inner_height, 0]);
+
+        self.xaxis = d3.axisBottom(self.xscale)
+            .ticks(['神戸市中央区','神戸市東灘区','神戸市灘区','神戸市兵庫区','神戸市北区','神戸市長田区','神戸市須磨区','神戸市垂水区','神戸市西区'])
+            .tickSizeOuter(0);
+
+        self.yaxis = d3.axisLeft(self.yscale)
+            .ticks(5)
+            .tickSizeOuter(0);
+
+        self.xaxis_group = self.chart.append('g')
+            .attr('transform', `translate(0, ${self.inner_height})`);
+
+        self.yaxis_group = self.chart.append('g');
+
+        const xlabel_space = 40;
+        self.svg.append('text')
+            .style('font-size', '12px')
+            .attr('x', self.config.width / 2)
+            .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
+            .text( self.config.xlabel );
+
+        const ylabel_space = 50;
+        self.svg.append('text')
+            .style('font-size', '12px')
+            .attr('transform', `rotate(-90)`)
+            .attr('y', self.config.margin.left - ylabel_space)
+            .attr('x', -(self.config.height / 2))
+            .attr('text-anchor', 'middle')
+            .attr('dy', '1em')
+            .text( self.config.ylabel );
+    }
+
+    update() {
+        let self = this;
+
+        const data_map = d3.rollup( self.data, v => v.length, d => d.weather );
+        self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
+        self.aggregated_data.sort(function(a,b){return(a.key - b.key);});
+
+        self.cvalue = d => d.key;
+        self.xvalue = d => d.key;
+        self.yvalue = d => d.count;
+
+        const items = self.aggregated_data.map( self.xvalue );
+        self.xscale.domain(items);
+
+        const ymin = 0;
+        const ymax = d3.max( self.aggregated_data, self.yvalue );
+        self.yscale.domain([ymin, ymax]);
+
+        self.percent = self.yvalue / self.aggregated_data.length;
+
+        self.pie = d3.pie()
+            .sort(null)
+            .value( d => d.percent );
+
+        self.arc = d3.arc()
+            .innerRadius(self.config.radius/3)
+            .outerRadius(self.config.radius);
+
+        self.render();
+    }
+
+    render() {
+        let self = this;
+
+        self.chart.selectAll("Pie")
+            .data(self.pie(self.aggregated_data))
+            .enter()
+            .append('path')
+            .attr('d', self.arc)
+            .attr("fill", d => self.config.cscale( self.cvalue(d) ))
+            .on('click', function(ev,d) {
+                const is_active2 = filter2.includes(d.key);
+                if ( is_active2 ) {
+                    filter2 = filter2.filter( f => f !== d.key );
+                }
+                else {
+                    filter2.push( d.key );
+                }
+                Filter();
+                d3.select(this).classed('active', !is_active2); //バーの縁取り(クリックの可視化)
+            });
+
+
+        self.chart.selectAll('text')
+            .data(self.pie(self.aggregated_data))
+            .enter()
+            .append("text")
+            .attr("transform", d => "translate(" + self.arc.centroid(d) + ")")
+            .attr("font-size", "10pt")
+            .attr("fill", "black")
+            .attr('font-weight', '800')
+            .attr("dy", "10px")
+            .attr("text-anchor", "middle")
+            .text(d => d.aggregated_data.xvalue + " (" + d.percent + "%)");
+       
+
+        self.xaxis_group
+            .call(self.xaxis);
+
+        self.yaxis_group
+            .call(self.yaxis);
+    }
+}
